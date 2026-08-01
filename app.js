@@ -88,16 +88,16 @@ const API_BASE = window.location.hostname.includes('github.io')
 
 // Dades locals de fallback per si la connexió al servidor de Render falla
 const DEFAULT_VOTS = [
-  { partit: 'Junts', vots: 1200 },
-  { partit: 'ERC', vots: 1000 },
-  { partit: 'PSC', vots: 900 },
-  { partit: 'SitgesGI', vots: 700 },
-  { partit: 'Verds Comuns Sitges', vots: 500 },
-  { partit: 'Guanyem', vots: 300 },
-  { partit: 'Vox', vots: 200 },
-  { partit: 'Fets per Sitges', vots: 150 },
-  { partit: 'PP', vots: 80 },
-  { partit: 'Solucions', vots: 30 },
+  { partit: 'Junts', vots: 0 },
+  { partit: 'ERC', vots: 0 },
+  { partit: 'PSC', vots: 0 },
+  { partit: 'SitgesGI', vots: 0 },
+  { partit: 'Verds Comuns Sitges', vots: 0 },
+  { partit: 'Guanyem', vots: 0 },
+  { partit: 'Vox', vots: 0 },
+  { partit: 'Fets per Sitges', vots: 0 },
+  { partit: 'PP', vots: 0 },
+  { partit: 'Solucions', vots: 0 },
   { partit: 'Aliança Catalana', vots: 0 }
 ];
 
@@ -190,7 +190,12 @@ const dom = {
   svgActualLarge: document.getElementById('svg-actual-large'),
   svgSimulatedLarge: document.getElementById('svg-simulated-large'),
   tooltip: document.getElementById('tooltip'),
-  subtitle: document.getElementById('subtitle')
+  subtitle: document.getElementById('subtitle'),
+  totalVotesCount: document.getElementById('total-votes-count'),
+  totalActualSeats: document.getElementById('total-actual-seats'),
+  totalSimulatedSeats: document.getElementById('total-simulated-seats'),
+  totalWebVotes: document.getElementById('total-web-votes'),
+  totalPctVotes: document.getElementById('total-pct-votes')
 };
 
 // Inicialització
@@ -443,11 +448,33 @@ async function submitVote() {
     dom.votingStatusMsg.className = 'status-message success';
     dom.votingStatusMsg.textContent = 'Gràcies per participar. El teu vot ja ha estat comptabilitzat.';
   } catch (err) {
-    console.error(err);
-    dom.votingStatusMsg.className = 'status-message error';
-    dom.votingStatusMsg.textContent = err.message;
-    dom.submitVoteBtn.disabled = false;
-    dom.submitVoteBtn.textContent = 'Envia el teu vot';
+    console.warn("Error connectant amb el servidor. Registrant el vot localment.", err);
+    
+    // Registrar el vot localment
+    appState.hasVoted = true;
+    localStorage.setItem('sitges_vot_realitzat', 'true');
+    
+    // Incrementar el partit seleccionat en les dades locals
+    const partyItem = appState.votes.find(v => v.partit === appState.selectedParty);
+    if (partyItem) {
+      partyItem.vots += 1;
+    } else {
+      appState.votes.push({ partit: appState.selectedParty, vots: 1 });
+    }
+    
+    // Guardar a LocalStorage
+    localStorage.setItem('sitges_vots_locals', JSON.stringify(appState.votes));
+    
+    // Recalcular
+    appState.totalVotes = appState.votes.reduce((sum, r) => sum + r.vots, 0);
+    appState.composicioSimulada = calcularDHondtFrontend(appState.votes, appState.totalVotes);
+    
+    renderPartiesList();
+    renderAllHemicycles();
+    renderResultsTable();
+    
+    dom.votingStatusMsg.className = 'status-message success';
+    dom.votingStatusMsg.textContent = 'El teu vot ha estat registrat localment correctament (servidor desconnectat).';
   }
 }
 
@@ -683,4 +710,15 @@ function renderResultsTable() {
 
     dom.resultsTableBody.appendChild(tr);
   });
+
+  // Actualitzar valors dels totals a la taula i a la capçalera
+  const totalActual = tableData.reduce((sum, item) => sum + item.actual, 0);
+  const totalSimulated = tableData.reduce((sum, item) => sum + item.simulat, 0);
+  const totalWebVotes = appState.totalVotes;
+
+  if (dom.totalActualSeats) dom.totalActualSeats.textContent = totalActual;
+  if (dom.totalSimulatedSeats) dom.totalSimulatedSeats.textContent = totalSimulated;
+  if (dom.totalWebVotes) dom.totalWebVotes.textContent = totalWebVotes;
+  if (dom.totalPctVotes) dom.totalPctVotes.textContent = totalWebVotes > 0 ? '100.0%' : '0.0%';
+  if (dom.totalVotesCount) dom.totalVotesCount.textContent = totalWebVotes;
 }

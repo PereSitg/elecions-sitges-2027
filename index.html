@@ -54,6 +54,11 @@
         <h3 class="section-title">Simulacre de Votació</h3>
         <p class="section-desc">Selecciona el partit al qual vols donar el teu vot en aquest simulacre.</p>
         
+        <!-- Total Votes Banner -->
+        <div id="voting-total-banner" class="voting-total-banner">
+          Vots totals registrats al simulacre: <strong id="total-votes-count">0</strong>
+        </div>
+        
         <!-- Privacy Notice -->
         <div class="privacy-notice" id="privacy-info">
           <svg class="privacy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -140,6 +145,15 @@
               <tbody id="results-table-body">
                 <!-- Dynamically populated via JS -->
               </tbody>
+              <tfoot>
+                <tr class="total-row">
+                  <td><strong>Total</strong></td>
+                  <td id="total-actual-seats" class="text-right font-semibold">21</td>
+                  <td id="total-simulated-seats" class="text-right font-semibold">0</td>
+                  <td id="total-web-votes" class="text-right font-semibold">0</td>
+                  <td id="total-pct-votes" class="text-right font-semibold">0.0%</td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
