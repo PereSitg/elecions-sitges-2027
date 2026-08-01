@@ -32,6 +32,15 @@ const PARTY_ORDER = [
   'Aliança Catalana'
 ];
 
+// Funció per generar el nom de fitxer del logotip a partir del nom del partit
+function getPartyLogoUrl(partyName) {
+  const cleanName = partyName.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // treu accents i diacrítics
+    .replace(/\s+/g, '-') // espais a guions
+    .replace(/[^a-z0-9-]/g, ''); // elimina caràcters especials
+  return `assets/${cleanName}.png`;
+}
+
 // Base de l'API per a crides externes si s'executa a GitHub Pages
 const API_BASE = window.location.hostname.includes('github.io')
   ? 'https://elecions-sitges-2027.onrender.com'
@@ -218,7 +227,10 @@ function renderPartiesList() {
 
     div.innerHTML = `
       <div class="party-info">
-        <span class="party-color-indicator" style="background-color: ${color};"></span>
+        <img src="${getPartyLogoUrl(partyName)}" class="party-logo" 
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" 
+          alt="${partyName}">
+        <span class="party-color-indicator" style="background-color: ${color}; display: none;"></span>
         <span class="party-name">${partyName}</span>
       </div>
       <input type="radio" name="party" class="party-radio" value="${partyName}" 
@@ -509,7 +521,10 @@ function renderResultsTable() {
     tr.innerHTML = `
       <td>
         <div class="table-party-cell">
-          <span class="table-color-dot" style="background-color: ${color};"></span>
+          <img src="${getPartyLogoUrl(item.partit)}" class="party-logo" 
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" 
+            alt="${item.partit}" style="width: 16px; height: 16px; margin-right: 4px;">
+          <span class="table-color-dot" style="background-color: ${color}; display: none; margin-right: 4px;"></span>
           <span class="table-party-name">${item.partit}</span>
         </div>
       </td>

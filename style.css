@@ -292,6 +292,18 @@ h2 {
   flex-shrink: 0;
 }
 
+.party-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid var(--card-border);
+  background-color: #ffffff;
+  padding: 1px;
+  transition: border-color var(--transition-theme);
+}
+
 .party-name {
   font-weight: 500;
   font-size: 0.95rem;

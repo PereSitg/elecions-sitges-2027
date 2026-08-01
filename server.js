@@ -25,6 +25,7 @@ app.get('/style.css', (req, res) => {
 app.get('/app.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'app.js'));
 });
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Inicialitzar base de dades SQLite
 const db = new sqlite3.Database(DB_PATH, (err) => {
