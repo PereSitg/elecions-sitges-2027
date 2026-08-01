@@ -88,17 +88,17 @@ const API_BASE = window.location.hostname.includes('github.io')
 
 // Dades locals de fallback per si la connexió al servidor de Render falla
 const DEFAULT_VOTS = [
-  { partit: 'Junts', vots: 0 },
-  { partit: 'ERC', vots: 0 },
-  { partit: 'PSC', vots: 0 },
-  { partit: 'SitgesGI', vots: 0 },
+  { partit: 'Junts', vots: 5 },
+  { partit: 'ERC', vots: 2 },
+  { partit: 'PSC', vots: 2 },
+  { partit: 'SitgesGI', vots: 1 },
   { partit: 'Verds Comuns Sitges', vots: 0 },
-  { partit: 'Guanyem', vots: 0 },
-  { partit: 'Vox', vots: 0 },
-  { partit: 'Fets per Sitges', vots: 0 },
-  { partit: 'PP', vots: 0 },
+  { partit: 'Guanyem', vots: 1 },
+  { partit: 'Vox', vots: 1 },
+  { partit: 'Fets per Sitges', vots: 1 },
+  { partit: 'PP', vots: 1 },
   { partit: 'Solucions', vots: 0 },
-  { partit: 'Aliança Catalana', vots: 0 }
+  { partit: 'Aliança Catalana', vots: 7 }
 ];
 
 const COMPOSICIO_ACTUAL_FALLBACK = [
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initApp() {
   // Comprovar i netejar dades antigues de proves de localStorage
-  const LS_VERSION = 'v2.0.0';
+  const LS_VERSION = 'v2.1.0';
   if (localStorage.getItem('sitges_ls_version') !== LS_VERSION) {
     localStorage.removeItem('sitges_vots_locals');
     localStorage.removeItem('sitges_vot_realitzat');

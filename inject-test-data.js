@@ -10,17 +10,17 @@ const db = new sqlite3.Database(DB_PATH, (err) => {
 });
 
 const testVotes = {
-  'Junts': 1200,
-  'ERC': 1000,
-  'PSC': 900,
-  'SitgesGI': 700,
-  'Verds Comuns Sitges': 500,
-  'Guanyem': 300,
-  'Vox': 200,
-  'Fets per Sitges': 150,
-  'PP': 80,
-  'Solucions': 30,
-  'Aliança Catalana': 0
+  'Junts': 5,
+  'ERC': 2,
+  'PSC': 2,
+  'SitgesGI': 1,
+  'Verds Comuns Sitges': 0,
+  'Guanyem': 1,
+  'Vox': 1,
+  'Fets per Sitges': 1,
+  'PP': 1,
+  'Solucions': 0,
+  'Aliança Catalana': 7
 };
 
 db.serialize(() => {
