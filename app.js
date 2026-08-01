@@ -204,6 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function initApp() {
+  // Comprovar i netejar dades antigues de proves de localStorage
+  const LS_VERSION = 'v2.0.0';
+  if (localStorage.getItem('sitges_ls_version') !== LS_VERSION) {
+    localStorage.removeItem('sitges_vots_locals');
+    localStorage.removeItem('sitges_vot_realitzat');
+    localStorage.setItem('sitges_ls_version', LS_VERSION);
+  }
+
   // Comprovar si ja ha votat localment a LocalStorage
   if (localStorage.getItem('sitges_vot_realitzat') === 'true') {
     appState.hasVoted = true;
