@@ -32,6 +32,11 @@ const PARTY_ORDER = [
   'Aliança Catalana'
 ];
 
+// Base de l'API per a crides externes si s'executa a GitHub Pages
+const API_BASE = window.location.hostname.includes('github.io')
+  ? 'https://elecions-sitges-2027.onrender.com'
+  : '';
+
 // Estat de l'aplicació
 let appState = {
   selectedParty: null,
@@ -170,7 +175,7 @@ function toggleTestTheme() {
 // Carrega els vots, l'estat i distribucions d'escons des de l'API
 async function fetchStatus() {
   try {
-    const res = await fetch('/api/status');
+    const res = await fetch(`${API_BASE}/api/status`);
     if (!res.ok) throw new Error('Error al connectar amb el servidor.');
     
     const data = await res.json();
@@ -267,7 +272,7 @@ async function submitVote() {
   dom.submitVoteBtn.textContent = 'Enviant...';
 
   try {
-    const res = await fetch('/api/vote', {
+    const res = await fetch(`${API_BASE}/api/vote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
