@@ -41,6 +41,28 @@ function getPartyLogoUrl(partyName) {
   return `assets/${cleanName}.png`;
 }
 
+// Funció per provar diferents extensions si una imatge no es troba (PNG, SVG, JPG, JPEG, WebP)
+function handleLogoError(imgElement) {
+  const src = imgElement.src;
+  
+  if (src.endsWith('.png')) {
+    imgElement.src = src.substring(0, src.length - 4) + '.svg';
+  } else if (src.endsWith('.svg')) {
+    imgElement.src = src.substring(0, src.length - 4) + '.jpg';
+  } else if (src.endsWith('.jpg')) {
+    imgElement.src = src.substring(0, src.length - 4) + '.jpeg';
+  } else if (src.endsWith('.jpeg')) {
+    imgElement.src = src.substring(0, src.length - 5) + '.webp';
+  } else {
+    // Si falla tot, ocultem la imatge i mostrem el cercle de color corporatiu
+    imgElement.style.display = 'none';
+    const fallback = imgElement.nextElementSibling;
+    if (fallback) {
+      fallback.style.display = 'inline-block';
+    }
+  }
+}
+
 // Base de l'API per a crides externes si s'executa a GitHub Pages
 const API_BASE = window.location.hostname.includes('github.io')
   ? 'https://elecions-sitges-2027.onrender.com'
@@ -228,7 +250,7 @@ function renderPartiesList() {
     div.innerHTML = `
       <div class="party-info">
         <img src="${getPartyLogoUrl(partyName)}" class="party-logo" 
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" 
+          onerror="handleLogoError(this)" 
           alt="${partyName}">
         <span class="party-color-indicator" style="background-color: ${color}; display: none;"></span>
         <span class="party-name">${partyName}</span>
@@ -522,9 +544,9 @@ function renderResultsTable() {
       <td>
         <div class="table-party-cell">
           <img src="${getPartyLogoUrl(item.partit)}" class="party-logo" 
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';" 
-            alt="${item.partit}" style="width: 16px; height: 16px; margin-right: 4px;">
-          <span class="table-color-dot" style="background-color: ${color}; display: none; margin-right: 4px;"></span>
+            onerror="handleLogoError(this)" 
+            alt="${item.partit}">
+          <span class="table-color-dot" style="background-color: ${color}; display: none;"></span>
           <span class="table-party-name">${item.partit}</span>
         </div>
       </td>

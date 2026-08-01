@@ -1,10 +1,10 @@
 # Logotips dels Partits Polítics
 
-Dins d'aquesta carpeta pots col·locar els logos dels partits en format **PNG** (preferiblement amb fons transparent). 
+Dins d'aquesta carpeta pots col·locar els logos dels partits en format **PNG, SVG, JPG, JPEG o WebP** (preferiblement amb fons transparent). 
 
-El nom de cada fitxer de logotip ha de coincidir amb el nom del partit normalitzat de la següent manera:
-* ERC -> `erc.png`
-* Junts -> `junts.png`
+El sistema provarà seqüencialment les diferents extensions. El nom de cada fitxer de logotip (independentment de l'extensió) ha de coincidir amb el nom del partit normalitzat de la següent manera:
+* ERC -> `erc.png` (o `erc.svg`, `erc.jpg`, etc.)
+* Junts -> `junts.png` (o `junts.svg`, `junts.jpg`, etc.)
 * PSC -> `psc.png`
 * Fets per Sitges -> `fets-per-sitges.png`
 * Solucions -> `solucions.png`
